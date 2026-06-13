@@ -3,24 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AYAN SHA • Full-Stack Developer</title>
+    <title>SUFIYAN SHAIKH • Full-Stack Developer</title>
 
     <!-- SEO -->
-    <meta name="description" content="Ayan Sha — self-taught full-stack developer based in Maharashtra. Available for global freelance and full-time opportunities.">
+    <meta name="description" content="Sufiyan Shaikh — self-taught full-stack developer based in Maharashtra. Available for global freelance and full-time opportunities.">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="AYAN SHA • Full-Stack Developer">
-    <meta property="og:description" content="Ayan Sha — self-taught full-stack developer based in Maharashtra. Available for global freelance and full-time opportunities.">
+    <meta property="og:title" content="SUFIYAN SHAIKH • Full-Stack Developer">
+    <meta property="og:description" content="Sufiyan Shaikh — self-taught full-stack developer based in Maharashtra. Available for global freelance and full-time opportunities.">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://ayansha.dev/">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="AYAN SHA • Full-Stack Developer">
-    <meta name="twitter:description" content="Ayan Sha — self-taught full-stack developer based in Maharashtra. Available for global freelance and full-time opportunities.">
+    <meta name="twitter:title" content="SUFIYAN SHAIKH • Full-Stack Developer">
+    <meta name="twitter:description" content="Sufiyan Shaikh — self-taught full-stack developer based in Maharashtra. Available for global freelance and full-time opportunities.">
 
-    <!-- Favicon & Theme -->
-    <link rel="icon" href="/favicon.ico">
     <meta name="theme-color" content="#09090b">
 
     <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital,wght@0,400;1,400&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
@@ -183,10 +180,27 @@
             align-items: center;
         }
 
+        .hero-left {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 2.5rem;
+        }
+
+        /* Avatar */
+        .hero-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 1px solid var(--border-hover);
+            object-fit: cover;
+            display: block;
+        }
+
         .hero-name {
-            font-size: clamp(4.5rem, 12vw, 9rem);
+            font-size: clamp(3.8rem, 10vw, 8rem);
             line-height: 0.88;
-            letter-spacing: -4px;
+            letter-spacing: -3px;
         }
 
         .hero-subtitle {
@@ -297,7 +311,6 @@
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
         }
 
-        /* Only apply hover transform if NOT mid-animate */
         .project-card.animate-in:hover { transform: translateY(-10px) scale(1.015); }
         .project-card:hover::before { opacity: 1; }
 
@@ -343,6 +356,12 @@
             letter-spacing: 0.3px;
         }
 
+        .project-links {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
         .project-link {
             color: var(--accent);
             text-decoration: none;
@@ -353,7 +372,11 @@
             transition: gap 0.3s var(--ease-out), opacity 0.3s ease;
         }
 
-        .project-link:hover { gap: 16px; }
+        .project-link.secondary {
+            color: var(--text-muted);
+        }
+
+        .project-link:hover { gap: 14px; opacity: 0.8; }
 
         /* =====================
            SERVICES
@@ -608,7 +631,6 @@
         }
 
         @media (max-width: 768px) {
-            /* Mobile nav */
             .menu-toggle { display: flex; }
 
             .nav-links {
@@ -622,7 +644,6 @@
                 align-items: center;
                 gap: 2.5rem;
                 font-size: 1.4rem;
-                /* Hidden off-screen to the right */
                 transform: translateX(100%);
                 transition: transform 0.4s var(--ease-out);
             }
@@ -631,18 +652,15 @@
 
             .nav-link { font-size: 1.4rem; }
 
-            /* Hero */
             .hero-grid {
                 grid-template-columns: 1fr;
                 gap: 3rem;
                 padding-top: 7rem;
             }
 
-            /* Projects */
             .projects-grid { grid-template-columns: 1fr; }
         }
 
-        /* Respect reduced-motion */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
                 animation-duration: 0.01ms !important;
@@ -656,7 +674,7 @@
     <!-- ===================== NAVBAR ===================== -->
     <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
-            <a href="#" class="logo" aria-label="Ayan Sha — home">AYAN // CODER</a>
+            <a href="#" class="logo" aria-label="Sufiyan Shaikh — home">SUFIYAN // DEV</a>
 
             <button class="menu-toggle" id="menu-toggle"
                     aria-label="Toggle navigation menu"
@@ -680,14 +698,22 @@
     <header class="hero" role="banner">
         <div class="hero-grid">
             <div class="hero-left">
-                <h1 class="hero-name">AYAN<br>SHA</h1>
+                <img
+                    src="https://avatars.githubusercontent.com/u/291445714?v=4"
+                    alt="Sufiyan Shaikh"
+                    class="hero-avatar"
+                    width="100"
+                    height="100"
+                    loading="eager"
+                >
+                <h1 class="hero-name">SUFIYAN<br>SHAIKH</h1>
             </div>
             <div class="hero-right">
                 <div class="hero-subtitle" aria-label="Self-taught full-stack developer">
                     SELF-TAUGHT /<br>FULL-STACK /<br>DEVELOPER
                 </div>
                 <p class="hero-desc">
-                    Based in Maharashtra. Building fast, responsive, and production-grade digital solutions from scratch.
+                    Based in Maharashtra. Building fast, responsive, and production-grade digital solutions — from luxury property platforms to interactive landing pages — crafted from scratch with precision.
                 </p>
             </div>
         </div>
@@ -706,61 +732,75 @@
         </div>
 
         <div class="projects-grid">
-            <!-- TODO: Replace href values with actual project URLs -->
 
             <article class="project-card">
                 <div class="project-number" aria-hidden="true">01</div>
-                <h3 class="project-title">TRANDYLINKS</h3>
+                <h3 class="project-title">SENTEMPO</h3>
                 <p class="project-desc">
-                    Live dark-themed affiliate link hub inspired by Linear.app.
-                    Category filtering, localStorage preferences, GA4 tracking, and a custom redirect engine.
+                    Ultra-premium luxury property listing site with live search, smart multi-filter logic (type, price, bedrooms), an interactive map view, and zero-reload client-side filtering. Built to demonstrate high-end UI craftsmanship.
                 </p>
                 <div class="project-tags" aria-label="Technologies used">
-                    <span>Next.js</span>
-                    <span>Framer Motion</span>
-                    <span>SEO</span>
+                    <span>HTML5</span>
+                    <span>CSS3</span>
+                    <span>TypeScript</span>
+                    <span>Vercel</span>
                 </div>
-                <a href="https://your-project-url.com" target="_blank" rel="noopener noreferrer"
-                   class="project-link" aria-label="View TrandyLinks project">
-                   View Project →
-                </a>
+                <div class="project-links">
+                    <a href="https://property-listing-site.vercel.app/" target="_blank" rel="noopener noreferrer"
+                       class="project-link" aria-label="View Sentempo live demo">
+                       Live Demo →
+                    </a>
+                    <a href="https://github.com/0-sufiyan-shaikh/Property-listing-site-demo" target="_blank" rel="noopener noreferrer"
+                       class="project-link secondary" aria-label="View Sentempo source code on GitHub">
+                       GitHub ↗
+                    </a>
+                </div>
             </article>
 
             <article class="project-card">
                 <div class="project-number" aria-hidden="true">02</div>
-                <h3 class="project-title">GRAY CHAT &amp; FLOW PRO</h3>
+                <h3 class="project-title">INTERACTIVE LANDING PAGE</h3>
                 <p class="project-desc">
-                    Framework-less JavaScript applications with real-time messaging, custom state engines,
-                    and productivity workflows with smooth, deliberate interactions.
+                    A modern, responsive landing page built with TypeScript, JavaScript, and CSS — showcasing smooth animations, deliberate micro-interactions, and a clean type-safe codebase. Fully responsive across all devices.
                 </p>
                 <div class="project-tags" aria-label="Technologies used">
-                    <span>Vanilla JS</span>
                     <span>TypeScript</span>
-                    <span>IndexedDB</span>
+                    <span>JavaScript</span>
+                    <span>CSS3</span>
+                    <span>Vercel</span>
                 </div>
-                <a href="https://your-project-url.com" target="_blank" rel="noopener noreferrer"
-                   class="project-link" aria-label="View Gray Chat and Flow Pro project">
-                   View Project →
-                </a>
+                <div class="project-links">
+                    <a href="https://interactive-landing-page-two.vercel.app/" target="_blank" rel="noopener noreferrer"
+                       class="project-link" aria-label="View Interactive Landing Page live demo">
+                       Live Demo →
+                    </a>
+                    <a href="https://github.com/0-sufiyan-shaikh/interactive-landing-page" target="_blank" rel="noopener noreferrer"
+                       class="project-link secondary" aria-label="View Interactive Landing Page source code on GitHub">
+                       GitHub ↗
+                    </a>
+                </div>
             </article>
 
             <article class="project-card">
                 <div class="project-number" aria-hidden="true">03</div>
-                <h3 class="project-title">TYPESCRIPT APPS</h3>
+                <h3 class="project-title">THIS PORTFOLIO</h3>
                 <p class="project-desc">
-                    Statically typed, architecturally sound applications showcasing clean code principles,
-                    domain-driven design, and scalable frontend architecture.
+                    A hand-crafted, zero-dependency portfolio site built with pure HTML, CSS, and vanilla JavaScript. Scroll-driven animations, accessible markup, mobile-first design, and production-ready performance — no frameworks needed.
                 </p>
                 <div class="project-tags" aria-label="Technologies used">
-                    <span>TypeScript</span>
-                    <span>Architecture</span>
-                    <span>Testing</span>
+                    <span>HTML5</span>
+                    <span>CSS3</span>
+                    <span>Vanilla JS</span>
+                    <span>Accessibility</span>
                 </div>
-                <a href="https://your-project-url.com" target="_blank" rel="noopener noreferrer"
-                   class="project-link" aria-label="View TypeScript Apps project">
-                   View Project →
-                </a>
+                <div class="project-links">
+                    <a href="https://github.com/0-sufiyan-shaikh/portfolio" target="_blank" rel="noopener noreferrer"
+                       class="project-link" aria-label="View portfolio source code on GitHub">
+                       View Source →
+                    </a>
+                </div>
             </article>
+
         </div>
     </section>
 
@@ -819,7 +859,7 @@
             <p class="availability">Available immediately for global freelance &amp; full-time opportunities</p>
         </div>
 
-        <!-- TODO: Replace YOUR_FORMSPREE_ID with your actual Formspree form ID -->
+        <!-- Replace YOUR_FORMSPREE_ID with your actual Formspree form ID -->
         <form id="contact-form" class="contact-form"
               action="https://formspree.io/f/YOUR_FORMSPREE_ID"
               method="POST"
@@ -842,7 +882,7 @@
                           required></textarea>
             </div>
 
-            <button type="submit" class="submit-btn" aria-label="Send message to Ayan Sha">
+            <button type="submit" class="submit-btn" aria-label="Send message to Sufiyan Shaikh">
                 <span class="btn-fill" aria-hidden="true"></span>
                 <span class="btn-label">SEND MESSAGE</span>
             </button>
@@ -851,20 +891,24 @@
         </form>
 
         <div class="contact-info">
-            <a href="mailto:ayansha555@email.com" class="contact-link"
-               aria-label="Email Ayan Sha at ayansha555@email.com">
-                ayansha555@email.com
+            <a href="mailto:o.sufiyan.shaikh@gmail.com" class="contact-link"
+               aria-label="Email Sufiyan Shaikh">
+                o.sufiyan.shaikh@gmail.com
             </a>
-            <a href="https://github.com/grayfox-coder" target="_blank" rel="noopener noreferrer"
-               class="contact-link" aria-label="Visit Ayan Sha's GitHub profile (opens in new tab)">
+            <a href="https://github.com/0-sufiyan-shaikh" target="_blank" rel="noopener noreferrer"
+               class="contact-link" aria-label="Visit Sufiyan Shaikh's GitHub profile (opens in new tab)">
                 GitHub →
+            </a>
+            <a href="https://www.linkedin.com/in/sufiyan-shaikh-1092b0401" target="_blank" rel="noopener noreferrer"
+               class="contact-link" aria-label="Visit Sufiyan Shaikh's LinkedIn profile (opens in new tab)">
+                LinkedIn →
             </a>
         </div>
     </section>
 
     <!-- ===================== FOOTER ===================== -->
     <footer class="footer" role="contentinfo">
-        <p>&copy; 2026 Ayan Sha. Crafted with precision.</p>
+        <p>&copy; 2026 Sufiyan Shaikh. Crafted with precision.</p>
     </footer>
 
     <script>
@@ -895,19 +939,17 @@
             navLinks.classList.contains('active') ? closeMenu() : openMenu();
         });
 
-        // Close menu when a nav link is clicked
         navLinks.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', closeMenu);
         });
 
-        // Close menu on Escape key
         document.addEventListener('keydown', e => {
             if (e.key === 'Escape' && navLinks.classList.contains('active')) closeMenu();
         });
 
 
         // ============================================================
-        // SMOOTH SCROLL (handles the navbar offset)
+        // SMOOTH SCROLL
         // ============================================================
         document.querySelectorAll('a[href^="#"]').forEach(link => {
             link.addEventListener('click', function(e) {
@@ -937,11 +979,11 @@
 
 
         // ============================================================
-        // ENTRANCE ANIMATIONS (Intersection Observer)
+        // ENTRANCE ANIMATIONS
         // ============================================================
-        const ioPrefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-        if (!ioPrefersReducedMotion) {
+        if (!prefersReducedMotion) {
             const observerOptions = {
                 root: null,
                 threshold: 0.1,
@@ -949,10 +991,9 @@
             };
 
             const observer = new IntersectionObserver((entries) => {
-                entries.forEach((entry, i) => {
+                entries.forEach((entry) => {
                     if (!entry.isIntersecting) return;
 
-                    // Stagger siblings observed at the same time
                     const siblings = [...entry.target.parentElement.children];
                     const idx = siblings.indexOf(entry.target);
 
@@ -968,7 +1009,6 @@
                 observer.observe(el);
             });
         } else {
-            // Skip animation for users who prefer reduced motion
             document.querySelectorAll('.project-card, .service-item').forEach(el => {
                 el.style.opacity = '1';
                 el.style.transform = 'none';
@@ -986,11 +1026,10 @@
             contactForm.addEventListener('submit', async function(e) {
                 e.preventDefault();
 
-                const submitBtn   = this.querySelector('.submit-btn');
-                const btnLabel    = submitBtn.querySelector('.btn-label');
+                const submitBtn    = this.querySelector('.submit-btn');
+                const btnLabel     = submitBtn.querySelector('.btn-label');
                 const originalHTML = btnLabel.innerHTML;
 
-                // Disable & indicate loading
                 submitBtn.disabled = true;
                 btnLabel.textContent = 'SENDING…';
                 formStatus.className = 'form-status';
@@ -1008,21 +1047,19 @@
                         formStatus.textContent = '✓ Message sent. I\'ll get back to you soon.';
                         this.reset();
 
-                        // Auto-hide success after 6 s
                         setTimeout(() => {
                             formStatus.className   = 'form-status';
                             formStatus.textContent = '';
                         }, 6000);
 
                     } else {
-                        // Surface Formspree-specific error messages when available
                         let errorMsg = 'Failed to send. Please try again.';
                         try {
                             const data = await response.json();
                             if (data.errors?.length) {
                                 errorMsg = data.errors.map(err => err.message).join(' ');
                             }
-                        } catch (_) { /* ignore JSON parse failure */ }
+                        } catch (_) {}
 
                         formStatus.className   = 'form-status error';
                         formStatus.textContent = '✕ ' + errorMsg;
