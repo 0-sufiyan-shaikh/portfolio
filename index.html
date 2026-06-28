@@ -26,8 +26,8 @@
     
     <style>
         :root {
-            --bg:            #09090b;
-            --surface:       #0d0d0f;
+            --bg:            #0a0a0c;
+            --surface:       #0e0e10;
             --text:          #f5f5f5;
             --text-muted:    #a1a1aa;
             --accent:        #e5e5e5;
@@ -36,6 +36,14 @@
             --green:         #4ade80;
             --red:           #f87171;
             --ease-out:      cubic-bezier(0.23, 1, 0.32, 1);
+
+            /* Neumorphism shadows */
+            --neu-shadow-light:  rgba(255, 255, 255, 0.05);
+            --neu-shadow-dark:   rgba(0, 0, 0, 0.4);
+            --neu-shadow:       8px 8px 16px var(--neu-shadow-dark), -8px -8px 16px var(--neu-shadow-light);
+            --neu-shadow-inset: inset 8px 8px 16px var(--neu-shadow-dark), inset -8px -8px 16px var(--neu-shadow-light);
+            --neu-shadow-sm:    4px 4px 8px var(--neu-shadow-dark), -4px -4px 8px var(--neu-shadow-light);
+            --neu-shadow-inset-sm: inset 4px 4px 8px var(--neu-shadow-dark), inset -4px -4px 8px var(--neu-shadow-light);
         }
 
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
@@ -47,6 +55,18 @@
             font-family: 'Space Grotesk', system-ui, sans-serif;
             line-height: 1.6;
             overflow-x: hidden;
+        }
+
+        /* Subtle neumorphic background pattern */
+        body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         h1, h2, h3, h4 {
@@ -67,11 +87,11 @@
         }
         .navbar.scrolled {
             padding: 1rem 5%;
-            background: rgba(9, 9, 11, 0.88);
+            background: var(--bg);
             backdrop-filter: blur(18px);
             -webkit-backdrop-filter: blur(18px);
-            border-bottom-color: var(--border);
-            box-shadow: 0 4px 40px rgba(0,0,0,0.25);
+            border-bottom: none;
+            box-shadow: var(--neu-shadow-sm);
         }
         .nav-container {
             display: flex;
@@ -113,11 +133,20 @@
             display: none;
             flex-direction: column;
             gap: 5px;
-            background: transparent;
+            background: var(--bg);
             border: none;
             cursor: pointer;
-            padding: 8px;
+            padding: 12px;
             z-index: 1001;
+            border-radius: 12px;
+            box-shadow: var(--neu-shadow-sm);
+            transition: all 0.3s var(--ease-out);
+        }
+        .menu-toggle:hover {
+            box-shadow: var(--neu-shadow);
+        }
+        .menu-toggle:active {
+            box-shadow: var(--neu-shadow-inset-sm);
         }
         .menu-toggle span {
             display: block;
@@ -194,9 +223,14 @@
         .hero-avatar {
             width: 100px; height: 100px;
             border-radius: 50%;
-            border: 1px solid var(--border-hover);
+            border: none;
             object-fit: cover;
             display: block;
+            box-shadow: var(--neu-shadow);
+            transition: all 0.3s var(--ease-out);
+        }
+        .hero-avatar:hover {
+            box-shadow: var(--neu-shadow), 0 0 20px rgba(0, 255, 214, 0.1);
         }
         .hero-name {
             font-size: clamp(3.8rem, 10vw, 8rem);
@@ -246,50 +280,213 @@
         .section-title  { font-size: 2.8rem; letter-spacing: -1px; }
 
         /* WORK */
-        .work-section { padding: 10rem 5% 8rem; max-width: 1400px; margin: 0 auto; }
+        .work-section { 
+            padding: 10rem 5% 8rem; 
+            max-width: 1400px; 
+            margin: 0 auto;
+        }
         .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 2rem; }
 
+        /* Neumorphic Project Cards */
         .project-card {
-            border: 1px solid var(--border);
-            padding: 3rem 2.5rem;
-            background: rgba(255,255,255,0.012);
-            position: relative;
-            overflow: hidden;
+            width: 100%;
+            height: 380px;
             opacity: 0;
             transform: translateY(32px);
-            transition: transform 0.55s var(--ease-out), border-color 0.4s ease, box-shadow 0.4s ease;
+            transition: transform 0.55s var(--ease-out);
         }
         .project-card.animate-in { animation: fade-slide-up 0.75s var(--ease-out) forwards; }
-        .project-card::before {
+
+        @media (max-width: 768px) {
+            .project-card {
+                height: 340px;
+            }
+            .project-title {
+                font-size: 1.5rem;
+            }
+            .project-desc {
+                font-size: 0.9rem;
+            }
+        }
+
+        .project-card-inner {
+            position: relative;
+            height: 100%;
+            border-radius: 30px;
+            background: var(--bg);
+            transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.55s ease;
+            box-shadow: var(--neu-shadow);
+            border: none;
+            padding: 2.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transform: scale(1);
+            overflow: hidden;
+        }
+
+        .project-card-inner > div:first-child {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Custom scrollbar for card content */
+        .project-card-inner > div:first-child::-webkit-scrollbar {
+            width: 4px;
+        }
+        .project-card-inner > div:first-child::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
+        }
+        .project-card-inner > div:first-child::-webkit-scrollbar-thumb {
+            background: rgba(0, 255, 214, 0.3);
+            border-radius: 2px;
+        }
+        .project-card-inner > div:first-child::-webkit-scrollbar-thumb:hover {
+            background: rgba(0, 255, 214, 0.5);
+        }
+
+        @media (max-width: 768px) {
+            .project-card-inner {
+                height: 340px;
+            }
+        }
+
+        .project-card:hover .project-card-inner {
+            transform: scale(1.02);
+            box-shadow: 12px 12px 24px var(--neu-shadow-dark), -12px -12px 24px var(--neu-shadow-light);
+        }
+
+        /* Neumorphic highlight effect */
+        .project-card-inner::before {
             content: '';
             position: absolute;
-            inset: 0;
-            background: linear-gradient(145deg, rgba(255,255,255,0.03), transparent);
-            opacity: 0;
-            transition: opacity 0.5s ease;
+            top: 10px;
+            left: 10px;
+            right: 10px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            border-radius: 1px;
             pointer-events: none;
         }
-        .project-card:hover { transform: translateY(-10px) scale(1.015); border-color: var(--border-hover); box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
-        .project-card.animate-in:hover { transform: translateY(-10px) scale(1.015); }
-        .project-card:hover::before { opacity: 1; }
 
-        .project-number { font-family: monospace; font-size: 1.3rem; opacity: 0.22; margin-bottom: 1.5rem; transition: opacity 0.4s ease, transform 0.4s ease; }
-        .project-card:hover .project-number { opacity: 0.6; transform: scale(1.08); }
-        .project-title  { font-size: 2rem; line-height: 1.1; margin-bottom: 1rem; }
-        .project-desc   { color: var(--text-muted); margin-bottom: 2rem; font-size: 1rem; line-height: 1.7; }
-        .project-tags   { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 2.5rem; }
-        .project-tags span { font-size: 0.78rem; padding: 3px 13px; border: 1px solid var(--border); border-radius: 9999px; color: var(--text-muted); letter-spacing: 0.3px; }
-        .project-links  { display: flex; gap: 1.5rem; flex-wrap: wrap; position: relative; z-index: 1; }
-        .project-link   { color: var(--accent); text-decoration: none; font-size: 0.9rem; display: inline-flex; align-items: center; gap: 8px; transition: gap 0.3s var(--ease-out), opacity 0.3s ease; }
+        .project-number { 
+            font-family: monospace; 
+            font-size: 1.3rem; 
+            opacity: 0.3; 
+            margin-bottom: 1rem; 
+            transition: opacity 0.4s ease;
+            position: relative;
+            z-index: 2;
+        }
+        .project-card:hover .project-number { opacity: 0.7; }
+        
+        .project-title  { 
+            font-size: 1.8rem; 
+            line-height: 1.1; 
+            margin-bottom: 0.75rem; 
+            color: var(--text);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .project-desc   { 
+            color: var(--text-muted); 
+            margin-bottom: 1.5rem; 
+            font-size: 0.95rem; 
+            line-height: 1.6;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .project-tags   { 
+            display: flex; 
+            flex-wrap: wrap; 
+            gap: 0.5rem; 
+            margin-bottom: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .project-tags span { 
+            font-size: 0.75rem; 
+            padding: 6px 14px; 
+            border: none; 
+            border-radius: 12px; 
+            color: var(--text-muted); 
+            letter-spacing: 0.3px;
+            background: var(--bg);
+            box-shadow: var(--neu-shadow-inset-sm);
+            transition: all 0.3s ease;
+        }
+        .project-card:hover .project-tags span {
+            color: rgba(0, 255, 214, 0.8);
+            box-shadow: var(--neu-shadow-sm);
+        }
+        
+        .project-links  { 
+            display: flex; 
+            gap: 1rem; 
+            flex-wrap: wrap; 
+            position: relative;
+            z-index: 2;
+        }
+        
+        .project-link   { 
+            color: var(--accent); 
+            text-decoration: none; 
+            font-size: 0.85rem; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 6px; 
+            transition: all 0.3s var(--ease-out);
+            padding: 10px 18px;
+            border-radius: 20px;
+            background: var(--bg);
+            border: none;
+            box-shadow: var(--neu-shadow-sm);
+        }
         .project-link.secondary { color: var(--text-muted); }
-        .project-link:hover { gap: 14px; opacity: 0.8; }
+        .project-link:hover { 
+            gap: 10px; 
+            box-shadow: var(--neu-shadow);
+            color: rgba(0, 255, 214, 0.9);
+            transform: translateY(-2px);
+        }
+        .project-link:active {
+            box-shadow: var(--neu-shadow-inset-sm);
+            transform: translateY(0);
+        }
 
         /* SERVICES */
-        .services-section { padding: 8rem 5%; background: var(--surface); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+        .services-section { 
+            padding: 8rem 5%; 
+            background: var(--bg); 
+            border-top: none; 
+            border-bottom: none;
+            box-shadow: inset 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
         .split-layout { max-width: 1400px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 8rem; }
         .split-left h2, .split-right h2 { font-size: 2.8rem; letter-spacing: -1px; margin-bottom: 3rem; }
         .services-list { display: flex; flex-direction: column; gap: 3.5rem; }
-        .service-item { display: grid; grid-template-columns: 56px 1fr; gap: 1.5rem; opacity: 0; transform: translateY(28px); }
+        .service-item { 
+            display: grid; 
+            grid-template-columns: 56px 1fr; 
+            gap: 1.5rem; 
+            opacity: 0; 
+            transform: translateY(28px);
+            padding: 1.5rem;
+            border-radius: 20px;
+            background: var(--bg);
+            box-shadow: var(--neu-shadow-sm);
+            transition: all 0.3s var(--ease-out);
+        }
+        .service-item:hover {
+            box-shadow: var(--neu-shadow);
+            transform: translateY(-4px);
+        }
         .service-item.animate-in { animation: fade-slide-up 0.75s var(--ease-out) forwards; }
         .service-num { font-family: monospace; font-size: 1.6rem; opacity: 0.25; padding-top: 2px; }
         .service-item h4 { font-family: 'Space Grotesk', sans-serif; font-size: 1.05rem; font-weight: 600; margin-bottom: 0.5rem; }
@@ -297,37 +494,59 @@
 
         /* TOOLKIT */
         .toolkit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(135px, 1fr)); gap: 0.9rem; }
-        .toolkit-item { border: 1px solid var(--border); padding: 1.1rem 1.4rem; font-size: 0.9rem; text-align: center; color: var(--text-muted); transition: background 0.3s ease, transform 0.3s ease, border-color 0.3s ease, color 0.3s ease; cursor: default; }
-        .toolkit-item:hover { background: rgba(255,255,255,0.04); border-color: var(--border-hover); transform: translateY(-3px); color: var(--text); }
+        .toolkit-item { 
+            border: none; 
+            padding: 1.1rem 1.4rem; 
+            font-size: 0.9rem; 
+            text-align: center; 
+            color: var(--text-muted); 
+            background: var(--bg);
+            border-radius: 16px;
+            box-shadow: var(--neu-shadow-sm);
+            transition: all 0.3s ease; 
+            cursor: default; 
+        }
+        .toolkit-item:hover { 
+            box-shadow: var(--neu-shadow);
+            transform: translateY(-3px); 
+            color: var(--text); 
+        }
 
         /* CONTACT */
-        .contact-section { padding: 10rem 5% 8rem; max-width: 800px; margin: 0 auto; }
+        .contact-section { 
+            padding: 10rem 5% 8rem; 
+            max-width: 800px; 
+            margin: 0 auto;
+        }
         .contact-header h2 { font-size: clamp(2.8rem, 7.5vw, 5.2rem); line-height: 1.05; margin-bottom: 1.25rem; }
         .availability { font-size: 0.85rem; letter-spacing: 1.5px; color: var(--accent); margin-bottom: 5rem; text-transform: uppercase; }
         .contact-form { display: flex; flex-direction: column; gap: 2.5rem; }
         .form-group { position: relative; }
         .form-group input, .form-group textarea {
             width: 100%;
-            background: transparent;
+            background: var(--bg);
             border: none;
-            border-bottom: 1px solid var(--border);
             outline: none;
             color: var(--text);
             font-family: 'Space Grotesk', sans-serif;
             font-size: 1.2rem;
-            padding: 0.6rem 0;
-            transition: border-color 0.4s ease;
+            padding: 1rem 1.25rem;
+            border-radius: 16px;
+            box-shadow: var(--neu-shadow-inset);
+            transition: all 0.3s ease;
             caret-color: var(--accent);
         }
         .form-group input::placeholder, .form-group textarea::placeholder { color: var(--text-muted); }
-        .form-group input:focus, .form-group textarea:focus { border-bottom-color: var(--accent); }
+        .form-group input:focus, .form-group textarea:focus { 
+            box-shadow: var(--neu-shadow-inset), 0 0 0 2px rgba(0, 255, 214, 0.2);
+        }
         .form-group textarea { min-height: 150px; resize: vertical; }
 
         .submit-btn {
             margin-top: 1.5rem;
-            background: transparent;
+            background: var(--bg);
             color: var(--text);
-            border: 1px solid var(--accent);
+            border: none;
             padding: 1.15rem 3rem;
             font-family: 'Space Grotesk', sans-serif;
             font-size: 1rem;
@@ -337,11 +556,20 @@
             position: relative;
             overflow: hidden;
             align-self: flex-start;
-            transition: color 0.4s var(--ease-out), transform 0.3s var(--ease-out);
+            border-radius: 16px;
+            box-shadow: var(--neu-shadow);
+            transition: all 0.3s var(--ease-out);
         }
-        .submit-btn:hover { color: #09090b; transform: scale(1.03); }
-        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-        .btn-fill { position: absolute; inset: 0; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.5s var(--ease-out); z-index: 0; pointer-events: none; }
+        .submit-btn:hover { 
+            box-shadow: 10px 10px 20px var(--neu-shadow-dark), -10px -10px 20px var(--neu-shadow-light);
+            transform: translateY(-2px);
+        }
+        .submit-btn:active { 
+            box-shadow: var(--neu-shadow-inset);
+            transform: translateY(0);
+        }
+        .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; transform: none; box-shadow: var(--neu-shadow); }
+        .btn-fill { position: absolute; inset: 0; background: var(--accent); transform: scaleX(0); transform-origin: left; transition: transform 0.5s var(--ease-out); z-index: 0; pointer-events: none; border-radius: 16px; }
         .submit-btn:hover:not(:disabled) .btn-fill { transform: scaleX(1); }
         .btn-label { position: relative; z-index: 1; }
 
@@ -350,11 +578,33 @@
         .form-status.error   { display: block; background: rgba(248,113,113,0.08); border: 1px solid rgba(248,113,113,0.25); color: var(--red); }
 
         .contact-info { margin-top: 5rem; display: flex; flex-direction: column; gap: 0.9rem; font-size: 1.05rem; }
-        .contact-link { color: var(--text-muted); text-decoration: none; transition: color 0.3s ease; width: fit-content; }
-        .contact-link:hover { color: var(--text); }
+        .contact-link { 
+            color: var(--text-muted); 
+            text-decoration: none; 
+            transition: all 0.3s ease; 
+            width: fit-content;
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
+            background: var(--bg);
+            box-shadow: var(--neu-shadow-sm);
+        }
+        .contact-link:hover { 
+            color: var(--text);
+            box-shadow: var(--neu-shadow);
+            transform: translateY(-2px);
+        }
 
         /* FOOTER */
-        .footer { padding: 2.5rem 5%; border-top: 1px solid var(--border); text-align: center; font-size: 0.82rem; color: var(--text-muted); letter-spacing: 0.3px; }
+        .footer { 
+            padding: 2.5rem 5%; 
+            border-top: none; 
+            text-align: center; 
+            font-size: 0.82rem; 
+            color: var(--text-muted); 
+            letter-spacing: 0.3px;
+            background: var(--bg);
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.2);
+        }
 
         /* ANIMATION */
         @keyframes fade-slide-up { to { opacity: 1; transform: translateY(0); } }
@@ -381,10 +631,32 @@
             .nav-link { font-size: 1.4rem; }
             .hero-grid { grid-template-columns: 1fr; gap: 3rem; padding-top: 7rem; }
             .projects-grid { grid-template-columns: 1fr; }
+            
+            /* Simplify neumorphic effects on mobile */
+            .project-card-inner {
+                box-shadow: var(--neu-shadow-sm);
+            }
+            .project-card:hover .project-card-inner {
+                box-shadow: var(--neu-shadow);
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+            
+            /* Disable neumorphic effects for reduced motion */
+            .project-card-inner,
+            .submit-btn,
+            .project-link,
+            .toolkit-item,
+            .service-item,
+            .contact-link,
+            .menu-toggle,
+            .form-group input,
+            .form-group textarea {
+                box-shadow: none;
+                border: 1px solid var(--border);
+            }
         }
     </style>
 </head>
@@ -393,7 +665,7 @@
     <!-- NAVBAR -->
     <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
         <div class="nav-container">
-            <a href="#" class="logo" aria-label="Sufiyan Shaikh — home">SUFIYAN // DEV</a>
+            <a href="#" class="logo" aria-label="Sufiyan Shaikh — home">SUFIYAN </a>
             <button class="menu-toggle" id="menu-toggle" aria-label="Toggle navigation menu" aria-expanded="false" aria-controls="nav-links">
                 <span></span><span></span><span></span>
             </button>
@@ -457,40 +729,69 @@
         <div class="projects-grid">
 
             <article class="project-card">
-                <div class="project-number" aria-hidden="true">01</div>
-                <h3 class="project-title">SENTEMPO</h3>
-                <p class="project-desc">Ultra-premium luxury property listing site with live search, smart multi-filter logic (type, price, bedrooms), an interactive map view, and zero-reload client-side filtering.</p>
-                <div class="project-tags" aria-label="Technologies used">
-                    <span>HTML5</span><span>CSS3</span><span>TypeScript</span><span>Vercel</span>
-                </div>
-                <div class="project-links">
-                    <a href="https://property-listing-site.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-link">Live Demo →</a>
-                    <a href="https://github.com/0-sufiyan-shaikh/Property-listing-site-demo" target="_blank" rel="noopener noreferrer" class="project-link secondary">GitHub ↗</a>
-                </div>
-            </article>
-
-            <article class="project-card">
-                <div class="project-number" aria-hidden="true">02</div>
-                <h3 class="project-title">INTERACTIVE LANDING PAGE</h3>
-                <p class="project-desc">A modern, responsive landing page built with TypeScript, JavaScript, and CSS — showcasing smooth animations, deliberate micro-interactions, and a clean type-safe codebase.</p>
-                <div class="project-tags" aria-label="Technologies used">
-                    <span>TypeScript</span><span>JavaScript</span><span>CSS3</span><span>Vercel</span>
-                </div>
-                <div class="project-links">
-                    <a href="https://interactive-landing-page-two.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-link">Live Demo →</a>
-                    <a href="https://github.com/0-sufiyan-shaikh/interactive-landing-page" target="_blank" rel="noopener noreferrer" class="project-link secondary">GitHub ↗</a>
+                <div class="project-card-inner">
+                    <div>
+                        <div class="project-number" aria-hidden="true">01</div>
+                        <h3 class="project-title">SENTEMPO</h3>
+                        <p class="project-desc">Ultra-premium luxury property listing site with live search, smart multi-filter logic (type, price, bedrooms), an interactive map view, and zero-reload client-side filtering.</p>
+                        <div class="project-tags" aria-label="Technologies used">
+                            <span>HTML5</span><span>CSS3</span><span>TypeScript</span><span>Vercel</span>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://property-listing-site.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-link">Live Demo →</a>
+                        <a href="https://github.com/0-sufiyan-shaikh/Property-listing-site-demo" target="_blank" rel="noopener noreferrer" class="project-link secondary">GitHub ↗</a>
+                    </div>
                 </div>
             </article>
 
             <article class="project-card">
-                <div class="project-number" aria-hidden="true">03</div>
-                <h3 class="project-title">THIS PORTFOLIO</h3>
-                <p class="project-desc">A hand-crafted, zero-dependency portfolio site built with pure HTML, CSS, and vanilla JavaScript. Scroll-driven animations, accessible markup, mobile-first design — no frameworks needed.</p>
-                <div class="project-tags" aria-label="Technologies used">
-                    <span>HTML5</span><span>CSS3</span><span>Vanilla JS</span><span>Accessibility</span>
+                <div class="project-card-inner">
+                    <div>
+                        <div class="project-number" aria-hidden="true">02</div>
+                        <h3 class="project-title">INTERACTIVE LANDING PAGE</h3>
+                        <p class="project-desc">A modern, responsive landing page built with TypeScript, JavaScript, and CSS — showcasing smooth animations, deliberate micro-interactions, and a clean type-safe codebase.</p>
+                        <div class="project-tags" aria-label="Technologies used">
+                            <span>TypeScript</span><span>JavaScript</span><span>CSS3</span><span>Vercel</span>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://interactive-landing-page-two.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-link">Live Demo →</a>
+                        <a href="https://github.com/0-sufiyan-shaikh/interactive-landing-page" target="_blank" rel="noopener noreferrer" class="project-link secondary">GitHub ↗</a>
+                    </div>
                 </div>
-                <div class="project-links">
-                    <a href="https://github.com/0-sufiyan-shaikh/portfolio" target="_blank" rel="noopener noreferrer" class="project-link">View Source →</a>
+            </article>
+
+            <article class="project-card">
+                <div class="project-card-inner">
+                    <div>
+                        <div class="project-number" aria-hidden="true">03</div>
+                        <h3 class="project-title">THIS PORTFOLIO</h3>
+                        <p class="project-desc">A hand-crafted, zero-dependency portfolio site built with pure HTML, CSS, and vanilla JavaScript. Scroll-driven animations, accessible markup, mobile-first design — no frameworks needed.</p>
+                        <div class="project-tags" aria-label="Technologies used">
+                            <span>HTML5</span><span>CSS3</span><span>Vanilla JS</span><span>Accessibility</span>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://github.com/0-sufiyan-shaikh/portfolio" target="_blank" rel="noopener noreferrer" class="project-link">View Source →</a>
+                    </div>
+                </div>
+            </article>
+
+            <article class="project-card">
+                <div class="project-card-inner">
+                    <div>
+                        <div class="project-number" aria-hidden="true">04</div>
+                        <h3 class="project-title">REAL ESTATE WEBSITE</h3>
+                        <p class="project-desc">A modern real estate platform built with Next.js 16, React 19, and Framer Motion. Features smooth animations, responsive design, and an intuitive property browsing experience with Tailwind CSS styling.</p>
+                        <div class="project-tags" aria-label="Technologies used">
+                            <span>Next.js</span><span>React</span><span>TypeScript</span><span>Framer Motion</span><span>Tailwind CSS</span>
+                        </div>
+                    </div>
+                    <div class="project-links">
+                        <a href="https://demo-real-estate-website-7pyg.vercel.app" target="_blank" rel="noopener noreferrer" class="project-link">Live Demo →</a>
+                        <a href="https://github.com/0-sufiyan-shaikh/terranova-" target="_blank" rel="noopener noreferrer" class="project-link secondary">GitHub ↗</a>
+                    </div>
                 </div>
             </article>
 
@@ -693,6 +994,35 @@
                 }
             });
         }
+
+        // NEUMORPHIC CARD HOVER EFFECT
+        const projectCards = document.querySelectorAll('.project-card');
+        const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        projectCards.forEach(card => {
+            if (reducedMotion) return;
+
+            const cardInner = card.querySelector('.project-card-inner');
+            if (!cardInner) return;
+
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const shadowX = (x - centerX) / 20;
+                const shadowY = (y - centerY) / 20;
+                
+                cardInner.style.boxShadow = `${shadowX}px ${shadowY}px 20px var(--neu-shadow-dark), ${-shadowX}px ${-shadowY}px 20px var(--neu-shadow-light)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                cardInner.style.boxShadow = 'var(--neu-shadow)';
+            });
+        });
 
     })();
     </script>
